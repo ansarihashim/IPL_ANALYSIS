@@ -1,182 +1,129 @@
-IPL Performance Analytics Dashboard
+# IPL Performance Analytics Dashboard — Power BI
 
-Overview
+An interactive one-page Power BI dashboard designed to analyze IPL performance across seasons, teams, and players.
 
-An interactive Power BI analytics dashboard built to explore IPL
-performance across seasons, teams, players, batting, and bowling.
+The project demonstrates a practical business intelligence workflow:
 
-The project demonstrates an end-to-end business intelligence workflow:
+**Data → Data Cleaning & Transformation → DAX Measures → KPIs → Interactive Filters → Visual Analytics → Insights**
 
-Data → Cleaning & Transformation → Data Modeling → DAX Measures → KPIs
-→ Interactive Visualizations → Insights
+---
 
-Objectives
+## 📊 Dashboard Overview
 
-Analyze IPL performance across multiple seasons
+The dashboard provides a compact overview of IPL performance using interactive KPIs, season-wise trends, team comparisons, and player performance analysis.
 
-Compare team performance and trends
+### Dashboard includes:
 
-Evaluate individual player performance
+- Total Runs
+- Total Wickets
+- Total Players
+- Total Matches
+- Season-wise run trends
+- Top 5 players by runs
+- Top 5 teams by runs
+- Interactive Season filter
+- Interactive Team filter
+- Interactive Player filter
 
-Analyze batting and bowling statistics
+The dashboard is intentionally designed as a **single-page analytical report** to provide the most important insights without unnecessary visual complexity.
 
-Build interactive KPIs and visual reports for exploratory analysis
+---
 
-Present data-driven insights in a business-friendly format
+## 🎯 Project Objectives
 
-Dashboard Pages
+The main objective of this project is to build a simple but practical Power BI dashboard capable of answering common IPL performance questions.
 
-The Power BI report is organized into five analytical pages:
+The dashboard focuses on:
 
-1. Overview
+- Understanding overall IPL performance
+- Comparing team performance
+- Identifying high-performing players
+- Analyzing performance trends across seasons
+- Building reusable DAX measures
+- Creating interactive Power BI visualizations
+- Presenting analytical information in a business-friendly format
 
-Provides a high-level view of IPL performance with key KPIs, season
-trends, and summary visualizations.
+---
 
-2. Team Analysis
+# 📌 Dashboard Features
 
-Focuses on team-level performance and comparisons across seasons,
-helping identify stronger and weaker teams and performance trends.
+## 1. KPI Overview
 
-3. Player Analysis
+The dashboard contains four high-level KPIs:
 
-Provides player-level analysis to compare individual performance and
-identify high-performing players.
+| KPI | Purpose |
+|---|---|
+| Total Runs | Total runs represented in the dataset |
+| Total Wickets | Total wickets represented in the dataset |
+| Total Players | Number of unique players |
+| Total Matches | Number of unique matches |
 
-4. Batting Analysis
+These KPIs provide an immediate summary of the dataset and update according to the selected filters.
 
-Analyzes batting performance using run-based statistics and player/team
-comparisons.
+---
 
-5. Bowling Analysis
+## 2. Season-wise Performance
 
-Analyzes bowling performance using wicket-based statistics and
-player/team comparisons.
+### Runs by Season
 
-Data Model
+A line chart is used to visualize how total runs change across IPL seasons.
 
-The project follows a dimensional modeling approach with separate
-dimension and fact tables.
+This allows users to quickly identify:
 
-                 ┌─────────────────────┐
-                 │   dim_players       │
-                 │  Player attributes  │
-                 └──────────┬──────────┘
-                            │
-                            │
-              ┌─────────────┴─────────────┐
-              │                           │
-┌─────────────▼────────────┐  ┌───────────▼─────────────┐
-│ fact_batting_summary     │  │ fact_bowling_summary    │
-│ Batting statistics       │  │ Bowling statistics      │
-└──────────────────────────┘  └─────────────────────────┘
+- Growth or decline in total runs
+- Differences between seasons
+- Overall performance trends
 
-                 ┌─────────────────────────┐
-                 │ dim_match_summary       │
-                 │ Match / season context  │
-                 └─────────────────────────┘
+---
 
-Tables
+## 3. Team Performance
 
-Table                               Purpose
+### Top 5 Teams by Runs
 
-dim_players                       Player-level attributes used for
-filtering and analysis
+A horizontal bar chart compares teams based on their total runs.
 
-dim_match_summary                 Match and season-level information
+The visualization helps identify teams with higher batting contributions within the selected filter context.
 
-fact_batting_summary              Batting performance metrics
+The chart can also respond to the Season and Player slicers.
 
-fact_bowling_summary              Bowling performance metrics
+---
 
-Data Preparation
+## 4. Player Performance
 
-The data was prepared for Power BI analysis through:
+### Top 5 Players by Runs
 
-Data cleaning and validation
+A horizontal bar chart displays the highest-performing players based on total runs.
 
-Data type standardization
+This provides a simple way to compare individual batting contributions.
 
-Column selection and transformation
+---
 
-Structuring data into fact and dimension tables
+# 🎛️ Interactive Filters
 
-Preparation of fields required for filtering and aggregation
+The dashboard contains three slicers:
 
-Power BI Techniques
+### Season
 
-The dashboard demonstrates:
+Allows users to analyze performance for a specific IPL season.
 
-Power Query for data transformation
+### Team
 
-Data Modeling for organizing analytical tables
+Allows users to filter the dashboard by team.
 
-DAX for calculated measures and KPIs
+### Player
 
-Interactive slicers and filters
+Allows users to focus the dashboard on an individual player.
 
-KPI cards
+The same DAX measures are dynamically recalculated based on the selected filter context.
 
-Comparative charts
+---
 
-Season-wise trend analysis
+# 🧮 DAX Measures
 
-Player and team comparisons
+The dashboard uses reusable DAX measures rather than creating separate calculations for individual visuals.
 
-Drill-down style exploratory analysis
+## Total Runs
 
-Key Analytical Questions
-
-The dashboard is designed to answer questions such as:
-
-How does team performance change across seasons?
-
-Which players have the strongest batting performance?
-
-Which players contribute most effectively with the ball?
-
-How do batting and bowling performances compare across teams?
-
-What trends can be observed across IPL seasons?
-
-Which players or teams stand out based on selected KPIs?
-
-Dashboard Preview
-
-Dashboard screenshots are available in the
-screenshot/ directory.
-
-The .pbix file is not included in this repository because of
-GitHub's file-size limitations. The repository instead contains the
-underlying datasets, dashboard screenshots, and documentation of the
-analytical model and DAX logic.
-
-Repository Structure
-
-IPL_ANALYSIS/
-│
-├── screenshot/
-│   ├── dashboard_overview.png
-│   ├── team_analysis.png
-│   ├── player_analysis.png
-│   ├── batting_analysis.png
-│   └── bowling_analysis.png
-│
-├── dim_match_summary.csv
-├── dim_players.csv
-├── fact_batting_summary.csv
-├── fact_bowling_summary.csv
-│
-├── DAX_MEASURES.md
-└── README.md
-
-Skills Demonstrated
-
-Data Analytics: Python, SQL concepts, data cleaning, aggregation,
-exploratory analysis
-
-Business Intelligence: Power BI, Power Query, DAX, data modeling,
-KPI development, interactive visualization
-
-Analytical Thinking: Trend analysis, comparative analysis,
-player/team performance analysis, communicating insights
+```DAX
+Total Runs =
+SUM(IPL_Performance_Analytics[runs])
