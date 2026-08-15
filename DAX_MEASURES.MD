@@ -1,177 +1,230 @@
-DAX Measures
+DAX Measures — IPL Performance Analytics Dashboard
 
-This document records the core DAX calculations used for the IPL
-Performance Analytics Dashboard.
+This document contains the core DAX measures used in the IPL Performance Analytics Dashboard built with Power BI.
 
-The measures are organized around the dashboard's five analytical pages:
+The dashboard is a single-page interactive report focused on:
 
-Overview
+Overall IPL KPIs
 
-Team Analysis
+Season-wise trends
 
-Player Analysis
+Team performance
 
-Batting Analysis
+Player performance
 
-Bowling Analysis
+Interactive filtering
 
-Important: DAX expressions must match the exact column names in
-the Power BI model. If a column name differs in the .pbix file,
-update the expression accordingly.
+1. Data Model
 
-1. Overview Measures
+The dashboard uses a consolidated analytical table:
+
+IPL_Performance_Analytics
+
+Important fields include:
+
+match_id
+
+season
+
+team
+
+player
+
+runs
+
+wickets
+
+balls
+
+SR
+
+overs
+
+economy
+
+DAX expressions must match the exact column names in the Power BI model.
+
+2. KPI Measures
 
 Total Runs
 
 Total Runs =
-SUM(fact_batting_summary[runs])
+SUM(IPL_Performance_Analytics[runs])
 
-Used to display the overall number of runs represented in the batting
-dataset.
+Calculates total runs and is used in the Total Runs KPI and run-based visuals.
 
 Total Wickets
 
 Total Wickets =
-SUM(fact_bowling_summary[wickets])
+SUM(IPL_Performance_Analytics[wickets])
 
-Used as a high-level bowling KPI.
+Calculates total wickets and is used in the Total Wickets KPI.
 
 Total Players
 
 Total Players =
-DISTINCTCOUNT(dim_players[player])
+DISTINCTCOUNT(IPL_Performance_Analytics[player])
 
-Used to show the number of unique players represented in the model.
+Counts unique players represented in the dataset.
 
 Total Matches
 
-If the match table contains a unique match identifier:
-
 Total Matches =
-DISTINCTCOUNT(dim_match_summary[match_id])
+DISTINCTCOUNT(IPL_Performance_Analytics[match_id])
 
-This measure provides the number of unique matches represented in the
-dataset.
+Counts unique matches represented in the dataset.
 
-2. Batting Analysis Measures
+3. Additional Measures
 
 Average Runs
 
 Average Runs =
-AVERAGE(fact_batting_summary[runs])
+AVERAGE(IPL_Performance_Analytics[runs])
 
-Used for comparing average batting output.
+Calculates average runs within the current filter context.
 
 Maximum Runs
 
 Maximum Runs =
-MAX(fact_batting_summary[runs])
+MAX(IPL_Performance_Analytics[runs])
 
-Useful for identifying the highest run value represented in the selected
-filter context.
-
-Player Runs
-
-Player Runs =
-SUM(fact_batting_summary[runs])
-
-When a player is selected through a slicer or visual interaction, the
-filter context limits this measure to that player.
-
-3. Bowling Analysis Measures
+Returns the highest run value within the current filter context.
 
 Average Wickets
 
 Average Wickets =
-AVERAGE(fact_bowling_summary[wickets])
+AVERAGE(IPL_Performance_Analytics[wickets])
 
-Used for comparing bowling output.
+Calculates average wickets within the current filter context.
 
 Maximum Wickets
 
 Maximum Wickets =
-MAX(fact_bowling_summary[wickets])
+MAX(IPL_Performance_Analytics[wickets])
 
-Used to identify the highest wicket value in the selected filter
-context.
+Returns the highest wickets value within the current filter context.
 
-Player Wickets
+4. Dashboard Visuals
 
-Player Wickets =
-SUM(fact_bowling_summary[wickets])
+Runs by Season
 
-When a player or team is selected, the existing filter context
-determines the displayed result.
+Uses:
 
-4. Team Analysis
+Axis   → season
+Values → Total Runs
 
-The team analysis pages primarily use the same base measures with team
-and season fields as the filter context.
+Power BI evaluates Total Runs separately for each season.
+
+Top 5 Teams by Runs
+
+Uses:
+
+Category → team
+Values   → Total Runs
+Filter   → Top 5
+
+Top 5 Players by Runs
+
+Uses:
+
+Category → player
+Values   → Total Runs
+Filter   → Top 5
+
+5. Interactive Slicers
+
+The dashboard contains:
+
+Season
+
+Team
+
+Player
+
+These slicers dynamically change the KPI cards and visualizations.
+
+6. DAX Filter Context
+
+A key concept demonstrated by the dashboard is filter context.
 
 For example:
-
-Team Runs =
-SUM(fact_batting_summary[runs])
-
-Team Wickets =
-SUM(fact_bowling_summary[wickets])
-
-These measures can be placed in charts with team or season fields to
-compare performance.
-
-5. Season Analysis
-
-The dashboard can use the same aggregation measures with the season
-field on the axis.
-
-For example:
-
-Season Runs =
-SUM(fact_batting_summary[runs])
-
-Season Wickets =
-SUM(fact_bowling_summary[wickets])
-
-Power BI automatically evaluates these measures for each season when the
-season column is used in the visual.
-
-6. Filter Context
-
-A key concept used throughout the dashboard is DAX filter context.
-
-For example, if a visual contains:
-
-Season → 2023
-Team   → Chennai Super Kings
-
-then:
 
 Total Runs =
-SUM(fact_batting_summary[runs])
+SUM(IPL_Performance_Analytics[runs])
 
-does not calculate the sum for the entire dataset. Power BI evaluates
-the measure using the active filters and returns the result for the
-selected season/team context.
+If the user selects:
 
-This allows the same measure to power multiple dashboard pages and
-visualizations.
+Season = 2023
+Team = RCB
 
-7. DAX Design Approach
+Power BI evaluates the same measure only against the rows matching those filters.
 
-The dashboard follows a reusable-measure approach rather than creating
-separate calculations for every visual.
+Conceptually:
 
-The general pattern is:
-
-Base Measure
+DAX Measure
      ↓
 Filter Context
      ↓
-Team / Player / Season
+Season / Team / Player
      ↓
+Filtered Data
+     ↓
+Result
+
+This allows the same measure to be reused across multiple visuals.
+
+7. DAX Design Approach
+
+The dashboard follows a reusable-measure approach instead of creating separate measures for every team, player, or season.
+
+The general pattern is:
+
+Base DAX Measure
+       ↓
+Filter Context
+       ↓
 Visualization
-     ↓
+       ↓
 Business Insight
 
-This keeps the analytical layer easier to maintain and allows the same
-measures to support multiple dashboard pages.
+This keeps the analytical layer simple, reusable, and easy to maintain.
+
+8. DAX Functions Used
+
+Function
+
+Purpose
+
+SUM()
+
+Total runs/wickets
+
+AVERAGE()
+
+Average performance
+
+MAX()
+
+Maximum performance
+
+DISTINCTCOUNT()
+
+Unique players/matches
+
+9. Dashboard Flow
+
+IPL Dataset
+     ↓
+Power Query
+     ↓
+Data Cleaning & Transformation
+     ↓
+IPL_Performance_Analytics
+     ↓
+DAX Measures
+     ↓
+KPIs + Slicers + Visualizations
+     ↓
+Interactive Analysis
+
+The DAX layer provides reusable calculations that respond dynamically to the dashboard's filter context.
